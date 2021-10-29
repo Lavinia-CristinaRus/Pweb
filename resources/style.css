@@ -1,0 +1,118 @@
+html { 
+    font-size: 62.5% 
+}
+body { 
+    font-family: "Helvetica Neue"; 
+    font-size: 13px; 
+    line-height: 20px; 
+    color: #666; 
+    position: relative; 
+    -webkit-font-smoothing: antialiased; 
+}
+/* Links ---------------------- */
+a { 
+    color: #2ba6cb; 
+    text-decoration: none; 
+    line-height: inherit; 
+}
+a:hover { 
+    color: #2795b6 
+}
+a:focus { 
+    color: #2ba6cb; 
+    outline: none; 
+}
+
+/* Base Type Styles Using Modular Scale ---------------------- */
+body,div,dl,dd { 
+    margin: 0; 
+    padding: 0; 
+    font-size: 13px; 
+    direction: ltr; 
+}
+p { 
+    font-size: 13px; 
+    line-height: 1.6; 
+    margin-bottom: 15px;
+ }
+
+hr { 
+    border: solid #ddd; 
+    border-width: 1px 0 0; 
+    clear: both; 
+    margin: 22px 0 21px; 
+    height: 0; 
+}
+
+/* The Grid ---------------------- */
+.row { 
+    width: 980px;  
+    min-width: 768px; 
+    max-width: 100%; 
+    margin: 0 auto; 
+}
+
+/* Tabs ---------------------- */
+dl.tabs { 
+    border-bottom: solid 1px #e6e6e6; 
+    display: block; 
+    height: 40px; 
+    padding: 0; 
+    margin-bottom: 20px; 
+}
+dl.tabs dd { 
+    display: block; 
+    float: left;
+    padding: 0; 
+    margin: 0; 
+}
+dl.tabs dd a { 
+    color: #6f6f6f; 
+    display: block; 
+    font-size: 14px; 
+    height: 40px; 
+    line-height: 40px; 
+    padding: 0px 23.8px; 
+}
+dl.tabs dd a:focus { 
+    font-weight: bold; 
+    color: #2ba6cb; 
+}
+dl.tabs dd.active { 
+    margin-top: -3px; 
+    border-bottom: 3px solid #55a2a6; 
+}
+dl.tabs dd.active a { 
+    cursor: default; color: #3c3c3c; 
+    font-weight: bold; 
+}
+
+/* CONTENT ---------------------- */
+.clear { 
+    clear: both 
+}
+
+.hr { 
+    height: 36px 
+}
+
+#footer { 
+    border-top:#55a2a6 4px solid; 
+    background: #151515; 
+    color: #666; 
+    padding: 30px 0; 
+    margin-top: 36px; 
+}
+#footer a { 
+    color: #666; 
+    font-size: 12px; 
+}
+#footer h1 { 
+    font-size: 16px; 
+    color: #ccc; 
+    margin-bottom: 20px;
+    margin-left: 20px; 
+}
+.colorbackground {
+    background:#55a2a6;
+}

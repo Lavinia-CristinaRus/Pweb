@@ -1,0 +1,64 @@
+.center {
+    position: absolute;
+    top: 10%;
+    transform: translate(74%, 0);
+    background:rgb(233, 230, 227);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+    width: 40%;
+    height: 75%;
+}
+
+.login {
+    position: absolute;
+    top: 17.5%;
+    transform: translate(50%, 0);
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 20%;
+    height: 60%;
+    border-left:#55a2a6 4px solid; 
+    background: #151515; 
+    z-index: -1;
+    
+}
+
+#login_text {
+    margin-top: 65%;
+    color:#2ba6cb;
+    animation-iteration-count: 1;
+}
+
+a { 
+    text-decoration: none;  
+}
+
+h1 {
+    text-align: center;
+    margin-top:10%;
+}
+
+@keyframes slidein {
+    from {
+      margin-left: 0%;
+    }
+  
+    to {
+      margin-left: 400px;
+    }
+    
+}
+
+
+.login:active { 
+    animation-duration: 0.1s;
+    animation-name: slidein;
+}
+
+
+.login:hover { 
+    width:20.5%;
+    transform: translate(38%, 0);
+}
+
+
+

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<head>
+
+  <title>Register</title>
+  <!-- CSS Files-->
+  <link rel="stylesheet" href="register_style.css">
+  <link rel="stylesheet" href="register_form_style.css">
+  <script src = "verify.js"></script>
+</head>
+<body>
+<div class="center">
+    <h1>Register</h1>
+    <form>
+        <div class="row">
+          <div class="col1">
+            <label for="fname">First Name</label>
+          </div>
+          <div class="col2">
+            <input type="text" id="fname" name="firstname" placeholder="Your first name..">
+          </div>
+        </div>
+        <div class="row">
+          <div class="col1">
+            <label for="lname">Last Name</label>
+          </div>
+          <div class="col2">
+            <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+          </div>
+        </div>
+        <div class="row">
+            <div class="col1">
+              <label for="nr">Email Adress</label>
+            </div>
+            <div class="col2">
+              <input type="email" id="email" name="email" placeholder="Your email adress..">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col1">
+              <label for="nr">Phone Number</label>
+            </div>
+            <div class="col2">
+              <input type="tel" id="phone" name="nr_telefon" placeholder="Your phone number..">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col1">
+              <label for="nr">Birthday</label>
+            </div>
+            <div class="col2">
+              <input type="date" id="bday" name="bday" placeholder="Your birthday.." min = "1900-01-01" max = "2020-12-31">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col1">
+              <label for="nr">Password</label>
+            </div>
+            <div class="col2">
+              <input type="password" id="pass" name="pass" placeholder="Your password..">
+            </div>
+          </div>
+            <input type="button" onclick = "verify()" value="Register">
+    </form>
+</div>
+<a href="javascript:setTimeout(()=>{window.location = 'login' },200);">
+    <div class = "login">
+        <h1 id = "login_text">Log In</h1>
+    </div>
+</a>
+
+</body>
+</html>

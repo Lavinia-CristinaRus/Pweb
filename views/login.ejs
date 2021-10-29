@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<head>
+<title>LogIn</title>
+<!-- CSS Files-->
+<link rel="stylesheet" href="login_style.css">
+<link rel="stylesheet" href="login_form_style.css">
+</head>
+<body>
+
+<div class="center">
+    <h1>Log In</h1>
+    <form>
+        <div class="row">
+            <div class="col1">
+              <label for="nr">Email Adress</label>
+            </div>
+            <div class="col2">
+              <input type="email" id="email" name="email" placeholder="Your email adress..">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col1">
+              <label for="nr">Password</label>
+            </div>
+            <div class="col2">
+              <input type="password" id="pass" name="pass" placeholder="Your password..">
+            </div>
+          </div>
+            <input type="button" value="Log In">
+        </div>
+        </form>
+</div>
+<a href="javascript:setTimeout(()=>{window.location = '/' },200);">
+    <div class = "register">
+        <h1 id = "register_text">Register</h1>
+    </div>
+</a>
+</body>
+</html>
