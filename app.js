@@ -46,7 +46,7 @@ app.get('/home', function(req, res) {
 app.listen(port)
 console.log('Server is listening on port ', port);
 
-app.post('/register', checkNotAuthenticated, async (req, res) => {
+app.post('/register', async (req, res) => {
     try {
       const hashedPassword = await bcrypt.hash(req.body.password, 10)
      /* users.push({
