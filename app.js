@@ -15,15 +15,9 @@ app.set('view engine', 'ejs')
 
 
 app.use(express.static(__dirname + '/resources'));
+app.use(express.urlencoded({ extended: false }))
 
 app.get('/', function(req, res) {
-    /*connection.query('SELECT * FROM departament WHERE dep_id = "5"', (error,rows) => {
-        if(error) throw error;
-    
-        if(!error) {
-            console.log(rows)
-        }
-    })*/
     res.render('register')
 })
 
@@ -51,3 +45,18 @@ app.get('/home', function(req, res) {
 
 app.listen(port)
 console.log('Server is listening on port ', port);
+
+app.post('/register', checkNotAuthenticated, async (req, res) => {
+    try {
+      const hashedPassword = await bcrypt.hash(req.body.password, 10)
+     /* users.push({
+        id: Date.now().toString(),
+        name: req.body.name,
+        email: req.body.email,
+        password: hashedPassword
+      })*/
+      res.redirect('/login')
+    } catch {
+      res.redirect('/register')
+    }
+  })

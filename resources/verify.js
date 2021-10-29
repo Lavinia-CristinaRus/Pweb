@@ -51,8 +51,8 @@ function verify() {
         p = p + 1;
     }
 
-    if(p == 6) {
-        window.location = "home.html";
-    }
+    /*if(p == 6) {
+        window.location = "login";
+    }*/
 
 }
