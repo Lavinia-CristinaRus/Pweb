@@ -5,12 +5,11 @@
   <!-- CSS Files-->
   <link rel="stylesheet" href="register_style.css">
   <link rel="stylesheet" href="register_form_style.css">
-  <script src = "verify.js"></script>
 </head>
 <body>
 <div class="center">
     <h1>Register</h1>
-    <form action="/register" method="POST">
+    <form action="/" method="post">
         <div class="row">
           <div class="col1">
             <label for="fname">First Name</label>
@@ -29,7 +28,7 @@
         </div>
         <div class="row">
             <div class="col1">
-              <label for="nr">Email Adress</label>
+              <label for="email">Email Adress</label>
             </div>
             <div class="col2">
               <input type="email" id="email" name="email" placeholder="Your email adress..">
@@ -37,7 +36,7 @@
           </div>
           <div class="row">
             <div class="col1">
-              <label for="nr">Phone Number</label>
+              <label for="phone">Phone Number</label>
             </div>
             <div class="col2">
               <input type="tel" id="phone" name="nr_telefon" placeholder="Your phone number..">
@@ -45,7 +44,7 @@
           </div>
           <div class="row">
             <div class="col1">
-              <label for="nr">Birthday</label>
+              <label for="bday">Birthday</label>
             </div>
             <div class="col2">
               <input type="date" id="bday" name="bday" placeholder="Your birthday.." min = "1900-01-01" max = "2020-12-31">
@@ -53,13 +52,28 @@
           </div>
           <div class="row">
             <div class="col1">
-              <label for="nr">Password</label>
+              <label for="pass">Password</label>
             </div>
             <div class="col2">
               <input type="password" id="pass" name="pass" placeholder="Your password..">
             </div>
           </div>
-            <input type="button" onclick = "verify()" value="Register">
+          <div class="row">
+            <div class="col1">
+              <label for="department">Department</label>
+            </div>
+            <div class="col2">
+            <input list="department_list" name="department" />
+              <datalist id="department_list">
+                <option value="Human Resources"> </option>
+                <option value="Design"> </option>
+                <option value="Public Relations"> </option>
+                <option value="IT"> </option>
+                <option value="Fundraising"> </option>
+              </datalist>
+            </div>
+          </div>
+          <input type="submit" value="Register">
     </form>
 </div>
 <a href="javascript:setTimeout(()=>{window.location = 'login' },200);">

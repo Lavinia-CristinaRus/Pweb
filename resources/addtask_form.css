@@ -1,5 +1,5 @@
   
-  input[type=text], input[type=tel], input[type=email], input[type=date], input[type=password], input[name=department]{
+  input[type=number],input[type=text], input[type=slide], input[type=range], input[name=department]{
     width: 80%;
     padding: 12px;
     border: 1px solid #ccc;
@@ -11,7 +11,14 @@
     display: inline-block;
     margin-left:25%;
   }
-  
+
+  .header {
+    color: #2ba6cb; 
+    text-decoration: none; 
+    line-height: inherit; 
+    font-size: 25px;
+    padding: 50px 0px;
+}
   input[type=submit] {
     background-color: #2ba6cb;
     color: white;
@@ -19,8 +26,8 @@
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top:2%;
-    margin-left:75%;
+    margin-top:5%;
+    margin-left:70%;
   }
   
   input[type=submit]:hover {

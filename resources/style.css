@@ -9,22 +9,23 @@ body {
     position: relative; 
     -webkit-font-smoothing: antialiased; 
 }
-/* Links ---------------------- */
-a { 
+.headername {
     color: #2ba6cb; 
     text-decoration: none; 
     line-height: inherit; 
+    font-size: 20px;
 }
-a:hover { 
-    color: #2795b6 
-}
-a:focus { 
-    color: #2ba6cb; 
-    outline: none; 
-}
+/* Links ---------------------- */
+
+a {
+    color: inherit;
+    text-decoration: inherit;
+  }
+
+ul { font-size: 14px; line-height: 1.6; margin-bottom: 17px; list-style-position: inside; }
 
 /* Base Type Styles Using Modular Scale ---------------------- */
-body,div,dl,dd { 
+body,div { 
     margin: 0; 
     padding: 0; 
     font-size: 13px; 
@@ -52,45 +53,82 @@ hr {
     margin: 0 auto; 
 }
 
-/* Tabs ---------------------- */
-dl.tabs { 
-    border-bottom: solid 1px #e6e6e6; 
-    display: block; 
-    height: 40px; 
-    padding: 0; 
-    margin-bottom: 20px; 
-}
-dl.tabs dd { 
-    display: block; 
-    float: left;
-    padding: 0; 
-    margin: 0; 
-}
-dl.tabs dd a { 
-    color: #6f6f6f; 
-    display: block; 
-    font-size: 14px; 
-    height: 40px; 
-    line-height: 40px; 
-    padding: 0px 23.8px; 
-}
-dl.tabs dd a:focus { 
-    font-weight: bold; 
-    color: #2ba6cb; 
-}
-dl.tabs dd.active { 
-    margin-top: -3px; 
-    border-bottom: 3px solid #55a2a6; 
-}
-dl.tabs dd.active a { 
-    cursor: default; color: #3c3c3c; 
-    font-weight: bold; 
-}
 
-/* CONTENT ---------------------- */
-.clear { 
-    clear: both 
-}
+.clear{
+    clear: both;
+  }
+  
+  
+  .slide-toggle{
+    display: none;
+  }
+  
+  .slidemenu{
+    font-family: arial, sans-serif;
+    max-width: 80%;
+    margin: 40px;
+    overflow: hidden;
+  }
+  
+  .slidemenu label{
+    width: 25%;
+    text-align: center;
+    display: block;
+    float: left;
+    color: #333;
+    opacity: 0.2;
+  
+  }
+  
+  .slidemenu label:hover{
+    cursor: pointer;
+    color: #666;
+  }
+  
+  .slidemenu label span{
+    display: block;
+    padding: 10px;    
+  }
+  
+  /*Bar Style*/
+  
+  .slider{
+    width: 100%;
+    height: 3px;
+    display: block;
+    background: #ccc;
+    margin-top: 10px;
+    border-radius: 5px;
+  }
+  
+  .slider .bar{
+    width: 25%;
+    height: 5px;
+    background: #2ba6cb;
+    border-radius: 5px;
+  }
+  
+  /*Animations*/
+  .slidemenu label, .slider .bar {
+    transition: all 500ms ease-in-out;
+    -webkit-transition: all 500ms ease-in-out;
+    -moz-transition: all 500ms ease-in-out;
+  }
+  
+  /*Toggle*/
+  
+  .slidemenu .slide-toggle:checked + label{
+    opacity: 1;
+  }
+  
+  
+  
+  .slidemenu #slide-item-1:checked ~ .slider .bar{ margin-left: 0; }
+  .slidemenu #slide-item-2:checked ~ .slider .bar{ margin-left: 25%; }
+  .slidemenu #slide-item-3:checked ~ .slider .bar{ margin-left: 50%; }
+  .slidemenu #slide-item-4:checked ~ .slider .bar{ margin-left: 75%; }
+  
+
 
 .hr { 
     height: 36px 
@@ -102,6 +140,7 @@ dl.tabs dd.active a {
     color: #666; 
     padding: 30px 0; 
     margin-top: 36px; 
+    margin-left:0px
 }
 #footer a { 
     color: #666; 
