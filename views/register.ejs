@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <head>
+  <input type = "text" value = <%= error %> id ="err"/>
   <% if(error!=null) { %>
   <script>
-    alert(error);
+    var e = document.getElementById("err").value;
+    alert( e );
   </script>
   <% } %>
   <title>Register</title>
