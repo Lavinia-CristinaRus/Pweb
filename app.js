@@ -49,46 +49,44 @@ app.post('/', function (req, res) {
     var department = req.body.department;
     const name_pattern = /^((([A-Z])([a-z]+)( ([A-Z])([a-z]+))*)+)$/;
     if(!name_pattern.test(firstname)) {
-        res.render('register',{error:'eroare'});
-        //alert("The name must start with an uppercase, the following letters must be lowercase, the name must have at least 2 letters and cannot contain numbers or symbols");
+        res.render('register',{error:"The name must start with an uppercase, the following letters must be lowercase, the name must have at least 2 letters and cannot contain numbers or symbols"});
     }
     else {
         if(!name_pattern.test(lastname)) {
-            alert("The name must start with an uppercase, the following letters must be lowercase, the name must have at least 2 letters and cannot contain numbers or symbols");
+            res.render('register',{error:"The name must start with an uppercase, the following letters must be lowercase, the name must have at least 2 letters and cannot contain numbers or symbols"});
         }
         else {
             const email_pattern = /^[A-Za-z](.+)@([A-Za-z]+)\.([A-Za-z]+)$/;
             if(!email_pattern.test(email)) {
-                alert("Introduce a valid email address");
+                res.render('register',{error:"Introduce a valid email address"});
             }
             else {
                 const tel_pattern = /^07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$/;
                 if(!tel_pattern.test(phone)) {
-                    alert("Introduce a valid phone number (format:07xxxxxxxx)");
+                    res.render('register',{error:"Introduce a valid phone number (format:07xxxxxxxx)"});
                 }
                 else {
                     if(!data) {
-                        alert("Please select a valid date");
+                        res.render('register',{error:"Please select a valid date"});
                     }
                     else {
                         const pass_pattern = /^.+.+.+.+.+.+.+.+$/;
                         if(!pass_pattern.test(parola)) {
-                            alert("The password should contain at least 8 characters");
+                            res.render('register',{error:"The password should contain at least 8 characters"});
                         }
                         else {
                             if(!department) {
-                                alert("Please select a department");
+                                res.render('register',{error:"Please select a department"});
                             }
                             else {
                                 connection.query('SELECT COUNT(*) AS nr FROM user WHERE email = ?', email, (error,rows) => {
                                     if(error) {
                                         console.log(error);
-                                        alert("An error occured while submitting the data, please try again");
-                                        res.render('register',{error:null})
+                                        res.render('register',{error:"An error occured while submitting the data, please try again"});
                                     }
                                     if(!error) {
                                         if(rows[0].nr) {
-                                            alert("An account with this email already exists");
+                                            res.render('register',{error:"An account with this email already exists"});
                                         }
                                         else {
                                             var id = 0;
@@ -97,8 +95,7 @@ app.post('/', function (req, res) {
                                             (error,rows) => {
                                                 if(error) {
                                                     console.log(error);
-                                                    alert("An error occured while submitting the data, please try again");
-                                                    res.render('register')
+                                                    res.render('register',{error:"An error occured while submitting the data, please try again"});
                                                 }
                                                 if(!error) {
                                                     id = rows[0].dep_id;
@@ -107,13 +104,11 @@ app.post('/', function (req, res) {
                                                         [email, lastname, firstname, phone, id, data, hash, 0], 
                                                         (error,rows) => {
                                                             if(!error) {
-                                                                alert("Data submitted successfully. Pending approval from the admin.");
-                                                                res.redirect('/login')
+                                                                res.render('register',{error:"Data submitted successfully. Pending approval from the admin."});
                                                             }
                                                             else {
                                                                 console.log(error);
-                                                                alert("An error occured while submitting the data, please try again");  
-                                                                res.render('register');
+                                                                res.render('register',{error:"An error occured while submitting the data, please try again"});  
                                                             }
                                                         })
                                                     });
@@ -132,47 +127,42 @@ app.post('/', function (req, res) {
  }) 
  
  app.get('/login', function(req, res) {
-    res.render('login');
+    res.render('login',{error:null});
 })
 
  app.post('/login', function(req, res) {
     var email = req.body.email;
     var parola = req.body.pass;
     if(!email) {
-        alert("Please insert an email address");
+        res.render('login',{error:"Please insert an email address"});
     }
     else {
         if(!parola) {
-            alert("Please insert the password");
+            res.render('login',{error:"Please insert the password"});
         }
         else {
             connection.query('SELECT COUNT(*) AS nr FROM user WHERE email = ?', email, (error,rows) => {
                 if(error){
                     console.log(error);
-                    alert("Login failed, please try again");
-                    res.render('login');
+                    res.render('login',{error:"Login failed, please try again"});
                 }
                 if(!error) {
                     if(rows[0].nr == 0) {
-                        alert("There is no account associated with this email");
+                        res.render('login',{error:"There is no account associated with this email"});
                     }
                     else {
                         connection.query("SELECT * FROM user WHERE email = ?", email, (error,userdata) => {
                             if(error) {
                                 console.log(error);
-                                alert("Login failed, please try again");
-                                res.render('login');
-                            }
+                                res.render('login',{error:"Login failed, please try again"});                            }
                             if(!error) {
                                 bcrypt.compare(parola, userdata[0].parola, function(err, rez) {
                                     if(!rez) {
-                                        alert("Wrong password");
-                                        res.render('login');
+                                        res.render('login',{error:"Wrong password"});
                                     }
                                     else {
                                         if(userdata[0].activated == 0) {
-                                            alert("Waiting for admin approval for using this account");
-                                            res.render('login');
+                                            res.render('login',{error:"Waiting for admin approval for using this account"});
                                         }
                                         else {
                                             req.session.user = userdata[0];
@@ -192,7 +182,7 @@ app.post('/', function (req, res) {
 app.get('/home', function(req,res) {
     var userdata = req.session.user;
     if(userdata) {
-        res.render('home',{userdata: userdata});
+        res.render('home',{userdata: userdata,error:null});
     }
     else{
         res.redirect("/login")
@@ -202,29 +192,29 @@ app.get('/home', function(req,res) {
 
 app.get('/colleagues', function(req, res) {
     if(req.session.user) {
-        var id = req.session.user.dep_id;
+        var idd = req.session.user.dep_id;
         if(req.session.user.cod_rol == 2) {
             connection.query("SELECT * FROM user",
             (error,data) => {
                 if(error) {
                     console.log(error);
-                    alert("An error occured while retrieving the data, please try again later");
+                    res.redirect('/colleagues');
                 }
                 if(!error) {
-                    res.render('colleagues',{data:data,user:req.session.user});
+                    res.render('colleagues',{data:data,user:req.session.user,error:null});
                 }
             });
         }
         else {
             connection.query("SELECT * FROM user WHERE dep_id = ? AND activated = ?",
-            [id,1],
+            [idd,1],
             (error,data) => {
                 if(error) {
                     console.log(error);
-                    alert("An error occured while retrieving the data, please try again later");
+                    res.redirect('/colleagues');
                 }
                 if(!error) {
-                    res.render('colleagues',{data:data,user:req.session.user});
+                    res.render('colleagues',{data:data,user:req.session.user,error:null});
                 }
             });
         }
@@ -240,7 +230,7 @@ app.post('/colleagues', function(req, res) {
             (error,data) => {
                 if(error) {
                     console.log(error);
-                    alert("An error occured while retrieving the data, please try again later");
+                    res.redirect('/colleagues');
                 }
                 if(!error) {
                     req.session.colleague = data[0];
@@ -254,82 +244,135 @@ app.post('/colleagues', function(req, res) {
             var dep;
             if(req.session.user.cod_rol == 2) {
                 dep = req.body.department;
-            }
-            if(dep) {
-                var id;
-                connection.query("SELECT * FROM departament WHERE nume = ?",
-                dep, 
-                (error,data) => {
-                    if(!error) {
-                        id = data[0].dep_id;
-                        if(!fname && lname) {
-                            connection.query("SELECT * FROM user WHERE nume = ? AND dep_id = ?",
-                            [lname,id],
-                            (error,data) => {
-                                if(!error) {
-                                    res.render('colleagues',{data:data,user:req.session.user});
-                                }
-                                else {
-                                    console.log(error);
-                                    alert("An error occured while filtering the data, please try again");  
-                                    res.redirect('/colleagues');
-                                }
-                            })
-                        }
-                        else {
-                            if(!lname && fname) {
-                                connection.query("SELECT * FROM user WHERE prenume = ? AND dep_id = ?",
-                                [fname,id], 
+                if(dep) {
+                    var idd;
+                    connection.query("SELECT * FROM departament WHERE nume = ?",
+                    dep, 
+                    (error,data) => {
+                        if(!error) {
+                            idd = data[0].dep_id;
+                            if(!fname && lname) {
+                                connection.query("SELECT * FROM user WHERE nume = ? AND dep_id = ?",
+                                [lname,idd],
                                 (error,data) => {
                                     if(!error) {
-                                        res.render('colleagues',{data:data,user:req.session.user});
+                                        res.render('colleagues',{data:data,user:req.session.user,error:null});
                                     }
                                     else {
                                         console.log(error);
-                                        alert("An error occured while filtering the data, please try again");  
+                                        res.render('colleagues',{data:data,user:req.session.user,error:"An error occured while filtering the data, please try again"});  
+                                    }
+                                })
+                            }
+                            else {
+                                if(!lname && fname) {
+                                    connection.query("SELECT * FROM user WHERE prenume = ? AND dep_id = ?",
+                                    [fname,idd], 
+                                    (error,data) => {
+                                        if(!error) {
+                                            res.render('colleagues',{data:data,user:req.session.user,error:null});
+                                        }
+                                        else {
+                                            console.log(error);
+                                            res.render('colleagues',{data:data,user:req.session.user,error:"An error occured while filtering the data, please try again"});  
+                                        }
+                                    })
+                                }
+                                else{
+                                    if(fname && lname) {
+                                        connection.query("SELECT * FROM user WHERE prenume = ? AND nume = ? AND dep_id = ?",
+                                        [fname,lname,idd], 
+                                        (error,data) => {
+                                            if(!error) {
+                                                res.render('colleagues',{data:data,user:req.session.user,error:null});
+                                            }
+                                            else {
+                                                console.log(error);
+                                                res.redirect('/colleagues');
+                                            }
+                                        })
+                                    }
+                                    else {
+                                        connection.query("SELECT * FROM user WHERE dep_id = ?",
+                                        idd, 
+                                        (error,data) => {
+                                            if(!error) {
+                                                res.render('colleagues',{data:data,user:req.session.user,error:null});
+                                            }
+                                            else {
+                                                console.log(error);
+                                                res.redirect('/colleagues');
+                                            }
+                                        })
+                                    }
+                                    
+                                }
+                            }
+                        }
+                        else {
+                            console.log(error);
+                            res.redirect('/colleagues');
+                        }
+                    })
+        
+                }
+                else {
+                    if(!fname && lname) {
+                        connection.query("SELECT * FROM user WHERE nume = ?",
+                        lname,
+                        (error,data) => {
+                            if(!error) {
+                                res.render('colleagues',{data:data,user:req.session.user,error:null});
+                            }
+                            else {
+                                console.log(error);
+                                res.render('colleagues',{data:data,user:req.session.user,error:"An error occured while filtering the data, please try again"});  
+                            }
+                        })
+                    }
+                    else {
+                        if(!lname && fname) {
+                            connection.query("SELECT * FROM user WHERE prenume = ?",
+                            fname, 
+                            (error,data) => {
+                                if(!error) {
+                                    res.render('colleagues',{data:data,user:req.session.user,error:null});
+                                }
+                                else {
+                                    console.log(error);
+                                    res.render('colleagues',{data:data,user:req.session.user,error:"An error occured while filtering the data, please try again"});  
+                                }
+                            })
+                        }
+                        else{
+                            if(fname && lname) {
+                                connection.query("SELECT * FROM user WHERE prenume = ? AND nume = ?",
+                                [fname,lname], 
+                                (error,data) => {
+                                    if(!error) {
+                                        res.render('colleagues',{data:data,user:req.session.user,error:null});
+                                    }
+                                    else {
+                                        console.log(error);
                                         res.redirect('/colleagues');
                                     }
                                 })
                             }
-                            else{
-                                if(fname && lname) {
-                                    connection.query("SELECT * FROM user WHERE prenume = ? AND nume = ? AND dep_id = ?",
-                                    [fname,lname,id], 
-                                    (error,data) => {
-                                        if(!error) {
-                                            res.render('colleagues',{data:data,user:req.session.user});
-                                        }
-                                        else {
-                                            console.log(error);
-                                            alert("An error occured while filtering the data, please try again");  
-                                            res.redirect('/colleagues');
-                                        }
-                                    })
-                                }
-                                else {
-                                    connection.query("SELECT * FROM user WHERE dep_id = ?",
-                                    id, 
-                                    (error,data) => {
-                                        if(!error) {
-                                            res.render('colleagues',{data:data,user:req.session.user});
-                                        }
-                                        else {
-                                            console.log(error);
-                                            alert("An error occured while filtering the data, please try again");  
-                                            res.redirect('/colleagues');
-                                        }
-                                    })
-                                }
+                            else {
+                                connection.query("SELECT * FROM user",
+                                (error,data) => {
+                                    if(!error) {
+                                        res.render('colleagues',{data:data,user:req.session.user,error:null});
+                                    }
+                                    else {
+                                        console.log(error);
+                                        res.redirect('/colleagues');
+                                    }
+                                })
                             }
                         }
                     }
-                    else {
-                        console.log(error);
-                        alert("An error occured while filtering the data, please try again");  
-                        res.redirect('/colleagues');
-                    }
-                })
-    
+                }
             }
             else {
                 if(!fname && lname) {
@@ -337,11 +380,10 @@ app.post('/colleagues', function(req, res) {
                     [lname, req.session.user.dep_id],
                     (error,data) => {
                         if(!error) {
-                            res.render('colleagues',{data:data,user:req.session.user});
+                            res.render('colleagues',{data:data,user:req.session.user,error:null});
                         }
                         else {
                             console.log(error);
-                            alert("An error occured while filtering the data, please try again");  
                             res.redirect('/colleagues');
                         }
                     })
@@ -352,11 +394,10 @@ app.post('/colleagues', function(req, res) {
                         [fname, req.session.user.dep_id],
                         (error,data) => {
                             if(!error) {
-                                res.render('colleagues',{data:data,user:req.session.user});
+                                res.render('colleagues',{data:data,user:req.session.user,error:null});
                             }
                             else {
                                 console.log(error);
-                                alert("An error occured while filtering the data, please try again");  
                                 res.redirect('/colleagues');
                             }
                         })
@@ -367,11 +408,23 @@ app.post('/colleagues', function(req, res) {
                             [fname,lname,req.session.user.dep_id], 
                             (error,data) => {
                                 if(!error) {
-                                    res.render('colleagues',{data:data,user:req.session.user});
+                                    res.render('colleagues',{data:data,user:req.session.user,error:null});
                                 }
                                 else {
                                     console.log(error);
-                                    alert("An error occured while filtering the data, please try again");  
+                                    res.redirect('/colleagues');
+                                }
+                            })
+                        }
+                        else {
+                            connection.query("SELECT * FROM user WHERE dep_id = ?",
+                            req.session.user.dep_id, 
+                            (error,data) => {
+                                if(!error) {
+                                    res.render('colleagues',{data:data,user:req.session.user,error:null});
+                                }
+                                else {
+                                    console.log(error);
                                     res.redirect('/colleagues');
                                 }
                             })
@@ -393,7 +446,7 @@ app.get('/profile', function(req,res) {
             (error,data) => {
                 if(error) {
                     console.log(error);
-                    alert("An error occured while retrieving the data, please try again later");
+                    res.redirect('/profile');
                 }
                 if(!error) {
                     var id = req.session.colleague.user_id;
@@ -403,7 +456,7 @@ app.get('/profile', function(req,res) {
                     (error,data) => {
                         if(error) {
                             console.log(error);
-                            alert("An error occured while retrieving the hours, please try again later");
+                            res.redirect('/profile');
                         }
                         if(!error) {
                             var ore = data[0].ore;
@@ -412,7 +465,7 @@ app.get('/profile', function(req,res) {
                             (error,data) => {
                                 if(error) {
                                     console.log(error);
-                                    alert("An error occured while retrieving the hours, please try again later");
+                                    res.render('profile',{colleague:colleague, user:user, dep:dep.nume, ore:'-', tasks:tasks,error:"An error occured while retrieving the data. Please try again later."});
                                 }
                                 if(!error) {
                                     var i = 1;
@@ -424,7 +477,7 @@ app.get('/profile', function(req,res) {
                                         tasks=tasks + ", " + data[i].denumire;
                                         i=i+1;
                                     }
-                                    res.render('profile',{colleague:colleague, user:user, dep:dep.nume, ore:ore, tasks:tasks});
+                                    res.render('profile',{colleague:colleague, user:user, dep:dep.nume, ore:ore, tasks:tasks,error:null});
                                 }
                             });
                         }
@@ -438,7 +491,7 @@ app.get('/profile', function(req,res) {
             (error,data) => {
                 if(error) {
                     console.log(error);
-                    alert("An error occured while retrieving the data, please try again later");
+                    res.redirect('/profile');
                 }
                 if(!error) {
                     dep=data[0]
@@ -448,11 +501,10 @@ app.get('/profile', function(req,res) {
                     (error,data) => {
                         if(error) {
                             console.log(error);
-                            alert("An error occured while retrieving the hours, please try again later");
-                            res.render('profile',{colleague:user, user:user, dep:dep.nume, ore:'-'});
+                            res.render('profile',{colleague:user, user:user, dep:dep.nume, ore:'-', error:"An error occured while retrieving the hours. Please try again later"});
                         }
                         if(!error) {
-                            res.render('profile',{colleague:user, user:user, dep:dep.nume, ore:data[0].ore});
+                            res.render('profile',{colleague:user, user:user, dep:dep.nume, ore:data[0].ore,error:null});
                         }
                     });
                 }
@@ -474,10 +526,10 @@ app.get('/availabletasks', function(req, res) {
             (error,data) => {
                 if(error) {
                     console.log(error);
-                    alert("An error occured while retrieving the data, please try again later");
+                    res.redirect('/availabletasks');
                 }
                 if(!error) {
-                    res.render('availabletasks',{data:data});
+                    res.render('availabletasks',{data:data,error:null});
                 }
             });
         }
@@ -487,10 +539,10 @@ app.get('/availabletasks', function(req, res) {
             (error,data) => {
                 if(error) {
                     console.log(error);
-                    alert("An error occured while retrieving the data, please try again later");
+                    res.redirect('/availabletasks');
                 }
                 if(!error) {
-                    res.render('availabletasks',{data:data});
+                    res.render('availabletasks',{data:data,error:null});
                 }
             });
         }
@@ -505,7 +557,7 @@ app.post('/availabletasks', function(req, res) {
         (error,data) => {
             if(error) {
                 console.log(error);
-                alert("An error occured while retrieving the data, please try again later");
+                res.render('availabletasks',{data:data,error:"An error occured while retrieving the data, please try again later"});
             }
             if(!error) {
                 req.session.task = data[0];
@@ -519,7 +571,7 @@ app.get('/task', function(req, res) {
     if(req.session.task) {
         var user = req.session.user;
         var task = req.session.task;
-        res.render('task',{user:user, task:task});
+        res.render('task',{user:user, task:task,error:null});
     }
     else {
         res.redirect('/availabletasks');
@@ -534,10 +586,10 @@ app.get('/mytasks', function(req, res) {
         (error,data) => {
             if(error) {
                 console.log(error);
-                alert("An error occured while retrieving the data, please try again later");
+                res.redirect('/mytasks');
             }
             if(!error) {
-                res.render('mytasks',{data:data});
+                res.render('mytasks',{data:data,error:null});
             }
         });
     }
@@ -551,7 +603,7 @@ app.post('/mytasks', function(req, res) {
         (error,data) => {
             if(error) {
                 console.log(error);
-                alert("An error occured while retrieving the data, please try again later");
+                res.render('mytasks',{data:data,error:"An error occured while retrieving the data, please try again later"});
             }
             if(!error) {
                 req.session.task = data[0];
@@ -563,7 +615,7 @@ app.post('/mytasks', function(req, res) {
 
 app.get('/addtask', function(req, res) {
     if(req.session.user.cod_rol) {
-        res.render('addtask',{user:req.session.user.cod_rol});
+        res.render('addtask',{user:req.session.user,error:null});
     }
 })
 
@@ -573,54 +625,60 @@ app.post('/addtask', function (req, res) {
     var time = req.body.time;
     var nrofpersons = req.body.nrofpersons;
     var attach = req.body.file;
-    var department 
+    var department;
     if(req.session.user.cod_rol==2) {
-        departament = req.body.department;
+        department = req.body.department;
     }
     const name_pattern = /^(([A-Za-z])+.+.+)$/;
-    const description_pattern = /^(([A-Za-z])+.{14,59})$/;
     if(!name_pattern.test(name)) {
-        alert("The name must start with a letter, and have at least 3 characters");
+        res.render('addtask',{user:req.session.user,error:"The name must start with a letter, and have at least 3 characters"});
     }
     else {
-        if(!description_pattern.test(description)) {
-            alert("The description must start with a letter, and have between least 15 and 60 characters");
+        if(!time) {
+            res.render('addtask',{user:req.session.user,error:"Introduce estimated time"});
         }
         else {
-            if(!time) {
-                alert("Introduce estimated time");
+            if(req.session.user.cod_rol == 2 && !department) {
+                res.render('addtask',{user:req.session.user,error:"Please select a department"});
             }
             else {
-                if(req.session.user.cod_rol == 2 && !department) {
-                    alert("Please select a department");
+                if(req.session.user.cod_rol == 2) {
+                    var idd;
+                    connection.query("SELECT * FROM departament WHERE nume = ?",
+                    department, 
+                    (error,rows) => {
+                        if(!error) {
+                            idd = rows[0].dep_id;
+                            connection.query("INSERT INTO task (denumire, descriere, timp, nr_persoane, id_dep, attach,status) VALUES (?,?,?,?,?,?,?)",
+                            [name,description,time,nrofpersons,idd,attach,'unstarted'], (error) => {
+                                if(!error) {
+                                    res.render('addtask',{user:req.session.user,error:"Data submitted successfully."});
+                                }
+                                else {
+                                    console.log(error);
+                                    res.render('addtask',{user:req.session.user,error:"An error occured while submitting the data, please try again"});
+                                }
+                            })
+                        }
+                        else{
+                            console.log(error);
+                            res.render('addtask',{user:req.session.user,error:"An error occured while submitting the data, please try again"});
+                        }
+                    })
                 }
                 else {
-                    var id = req.session.user.dep_id;
-                    if(req.session.user.cod_rol == 2) {
-                        connection.query("SELECT * FROM departament WHERE nume = ?",
-                        department, 
-                        (error,rows) => {
-                        if(error) {
-                            console.log(error);
-                            alert("An error occured while submitting the data, please try again");
-                            res.render('addtask',{user:req.session.user});
-                        }
-                        id = rows[0].dep_id;
-                        })
-                    }
+                    var idd = req.session.user.dep_id;
                     connection.query("INSERT INTO task (denumire, descriere, timp, nr_persoane, id_dep, attach,status) VALUES (?,?,?,?,?,?,?)",
-                        [name,description,time,nrofpersons,id,attach,'unstarted'], (error,rows) => {
-                            if(!error) {
-                                alert("Data submitted successfully.");
-                                res.render('addtask',{user:req.session.user});
-                            }
-                            else {
-                                console.log(error);
-                                alert("An error occured while submitting the data, please try again");  
-                                res.render('addtask',{user:req.session.user});
-                            }
-                            
-                        })
+                    [name,description,time,nrofpersons,idd,attach,'unstarted'], (error) => {
+                        if(!error) {
+                            res.render('addtask',{user:req.session.user,error:"Data submitted successfully."});
+                        }
+                        else {
+                            console.log(error);
+                            res.render('addtask',{user:req.session.user,error:"An error occured while submitting the data, please try again"});
+                        }
+                        
+                    })
                 }
             }
         }
@@ -635,11 +693,9 @@ app.get('/deletetask', function (req,res) {
         (error) => {
             if(error) {
                 console.log(error);
-                alert("An error occured while retrieving the data, please try again later");
                 res.redirect('/mytasks');
             }
             if(!error) {
-                alert("Task deleted sucessfully");
                 res.redirect('/mytasks');
             }
         });
@@ -656,11 +712,9 @@ app.get('/droptask', function (req,res) {
                 (error) => {
                     if(error) {
                         console.log(error);
-                        alert("An error occured while retrieving the data, please try again later");
-                        res.redirect('/mytasks');
+                        res.redirect('/droptask');
                     }
                     if(!error) {
-                        alert("Task dropped sucessfully");
                         res.redirect('/mytasks');
                     }
                 });
@@ -672,11 +726,9 @@ app.get('/droptask', function (req,res) {
                     (error) => {
                         if(error) {
                             console.log(error);
-                            alert("An error occured while retrieving the data, please try again later");
                             res.redirect('/mytasks');
                         }
                         if(!error) {
-                            alert("Task dropped sucessfully");
                             res.redirect('/mytasks');
                         }
                     });
@@ -687,11 +739,9 @@ app.get('/droptask', function (req,res) {
                     (error) => {
                         if(error) {
                             console.log(error);
-                            alert("An error occured while retrieving the data, please try again later");
                             res.redirect('/mytasks');
                         }
                         if(!error) {
-                            alert("Task dropped sucessfully");
                             res.redirect('/mytasks');
                         }
                     });
@@ -712,11 +762,9 @@ app.get('/maketask', function (req,res) {
                 (error) => {
                     if(error) {
                         console.log(error);
-                        alert("An error occured while retrieving the data, please try again later");
                         res.redirect('/mytasks');
                     }
                     if(!error) {
-                        alert("Task taken sucessfully");
                         res.redirect('/mytasks');
                     }
                 });
@@ -728,11 +776,9 @@ app.get('/maketask', function (req,res) {
                     (error) => {
                         if(error) {
                             console.log(error);
-                            alert("An error occured while retrieving the data, please try again later");
                             res.redirect('/mytasks');
                         }
                         if(!error) {
-                            alert("Task taken sucessfully");
                             res.redirect('/mytasks');
                         }
                     });
@@ -743,11 +789,9 @@ app.get('/maketask', function (req,res) {
                     (error) => {
                         if(error) {
                             console.log(error);
-                            alert("An error occured while retrieving the data, please try again later");
                             res.redirect('/mytasks');
                         }
                         if(!error) {
-                            alert("Task taken sucessfully");
                             res.redirect('/mytasks');
                         }
                     });
@@ -765,11 +809,9 @@ app.get('/markinprogress', function (req,res) {
         (error) => {
             if(error) {
                 console.log(error);
-                alert("An error occured while updating the data, please try again later");
                 res.redirect('/mytasks');
             }
             if(!error) {
-                alert("Task updated sucessfully");
                 res.redirect('/mytasks');
             }
         });
@@ -784,11 +826,9 @@ app.get('/markdone', function (req,res) {
         (error) => {
             if(error) {
                 console.log(error);
-                alert("An error occured while updating the data, please try again later");
                 res.redirect('/mytasks');
             }
             if(!error) {
-                alert("Task updated sucessfully");
                 res.redirect('/mytasks');
             }
         });
@@ -803,11 +843,9 @@ app.get('/deleteaccount', function (req,res) {
         (error) => {
             if(error) {
                 console.log(error);
-                alert("An error occured while retrieving the data, please try again later");
                 res.redirect('/colleagues');
             }
             if(!error) {
-                alert("Account deleted sucessfully");
                 res.redirect('/colleagues');
             }
         });
@@ -822,11 +860,9 @@ app.get('/activateaccount', function (req,res) {
         (error) => {
             if(error) {
                 console.log(error);
-                alert("An error occured while updating the data, please try again later");
                 res.redirect('/colleagues');
             }
             if(!error) {
-                alert("Account activated sucessfully");
                 res.redirect('/colleagues');
             }
         });
@@ -835,7 +871,7 @@ app.get('/activateaccount', function (req,res) {
 
 app.get('/changepassword', function(req,res) {
     if(req.session.user) {
-        res.render('changepassword');
+        res.render('changepassword',{error:null});
     }
 })
 
@@ -850,14 +886,12 @@ app.post('/changepassword', function(req,res) {
             (error,rows) => {
                 if(error) {
                     console.log(error);
-                    alert("An error occured while submitting the data, please try again");
-                    res.render('changepassword', {user:req.session.user})
+                    res.render('changepassword', {user:req.session.user,error:"An error occured while submitting the data, please try again"});
                 }
                 if(!error) {
                     bcrypt.compare(old, rows[0].parola, function(err, rez) {
                         if(!rez) {
-                            alert("Wrong password");
-                            res.render('changepassword');
+                            res.render('changepassword',{user:req.session.user,error:"Wrong password"});
                         }
                     });
                 }
@@ -865,24 +899,22 @@ app.post('/changepassword', function(req,res) {
         }
         const pass_pattern = /^.+.+.+.+.+.+.+.+$/;
         if(!pass_pattern.test(new1)) {
-            alert("The password should contain at least 8 characters");
+            res.render('changepassword',{user:req.session.user,error:"The password should contain at least 8 characters"});
         }
         else {
             if(new1 != new2) {
-                alert("The passwords do not match");
+                res.render('changepassword',{user:req.session.user,error:"The fields do not match"});
             }
             else {
-                bcrypt.hash(new1, saltRounds, (err, hash) => {
+                bcrypt.hash(new1, saltRounds, (error, hash) => {
                     connection.query("UPDATE user SET parola = ? WHERE user_id = ?", [hash,req.session.colleague.user_id], 
                     (error) => {
                         if(!error) {
-                            alert("Data submitted successfully.");
                             res.redirect('/profile')
                         }
                         else {
                             console.log(error);
-                            alert("An error occured while submitting the data, please try again");  
-                            res.render('changepassword');
+                            res.render('changepassword',{user:req.session.user,error:"An error occured while submitting the data, please try again"});  
                         }
                     })
                 })
@@ -893,7 +925,7 @@ app.post('/changepassword', function(req,res) {
 
 app.get('/edittask',function(req,res) {
     if(req.session.task) {
-        res.render('edittask',{task:req.session.task})
+        res.render('edittask',{task:req.session.task,error:null})
     }
 })
 
@@ -914,37 +946,29 @@ app.post('/edittask', function (req, res) {
         }
     }
     const name_pattern = /^(([A-Za-z])+.+.+)$/;
-    const description_pattern = /^(([A-Za-z])+.{14,59})$/;
     if(!name_pattern.test(name)) {
-        alert("The name must start with a letter, and have at least 3 characters");
+        res.render('edittask',{task:req.session.task,error:"The name must start with a letter, and have at least 3 characters"});
     }
     else {
-        if(!description_pattern.test(description)) {
-            alert("The description must start with a letter, and have between least 15 and 60 characters");
+        if(!time) {
+            res.render('edittask',{task:req.session.task,error:"Introduce estimated time"});
         }
         else {
-            if(!time) {
-                alert("Introduce estimated time");
+            if(!status) {
+                res.render('edittask',{task:req.session.task,error:"Status is required"});
             }
             else {
-                if(!status) {
-                    alert("Status is required");
-                }
-                else {
-                    connection.query("UPDATE task SET denumire = ?, descriere = ?, timp = ?, attach = ?, id_user_f = ?, id_user_s = ?, id_user_t = ?, status = ? WHERE task_id = ?",
-                    [name,description,time,attach, f_id, s_id, t_id, status, req.session.task.task_id], (error,rows) => {
-                        if(!error) {
-                            alert("Task updated successfully.");
-                            res.redirect('/task');
-                        }
-                        else {
-                            console.log(error);
-                            alert("An error occured while submitting the data, please try again");  
-                            res.redirect('/task');
-                        }
-                        
-                    })
-                }
+                connection.query("UPDATE task SET denumire = ?, descriere = ?, timp = ?, attach = ?, id_user_f = ?, id_user_s = ?, id_user_t = ?, status = ? WHERE task_id = ?",
+                [name,description,time,attach, f_id, s_id, t_id, status, req.session.task.task_id], (error,rows) => {
+                    if(!error) {
+                        res.redirect('/task');
+                    }
+                    else {
+                        console.log(error);
+                        res.render('edittask',{task:req.session.task,error:"An error occured while submitting the data, please try again"});  
+                    }
+                    
+                })
             }
         }
     }
@@ -956,10 +980,10 @@ app.post('/edittask', function (req, res) {
         (error,data) => {
             if(error) {
                 console.log(error);
-                alert("An error occured while retrieving the data, please try again later");
+                res.redirect('/alltasks');
             }
             if(!error) {
-                res.render('mytasks',{data:data});
+                res.render('mytasks',{data:data,error:null});
             }
         });
     }
@@ -967,10 +991,10 @@ app.post('/edittask', function (req, res) {
         connection.query("SELECT * FROM task WHERE id_dep = ?", req.session.user.dep_id,
         (error,data) => {
             if(error) {
-                alert("An error occured while retrieving the data, please try again later");
+               res.redirect('/alltasks');
             }
             if(!error) {
-                res.render('mytasks',{data:data});
+                res.render('mytasks',{data:data,error:null});
             }
         });
     }
@@ -983,10 +1007,10 @@ app.get('/edituser',function(req,res) {
         (error,data) => {
             if(error) {
                 console.log(error);
-                alert("An error occured while retrieving the data, please try again later");
+                res.redirect('/profile');
             }
             if(!error) {
-                res.render('edituser',{user:req.session.user, colleague:req.session.colleague, dep:data[0]});
+                res.render('edituser',{user:req.session.user, colleague:req.session.colleague, dep:data[0],error:null});
             }
         })
     }
@@ -1015,41 +1039,41 @@ app.post('/edituser', function (req, res) {
     }
     const name_pattern = /^((([A-Z])([a-z]+)( ([A-Z])([a-z]+))*)+)$/;
     if(!name_pattern.test(firstname)) {
-        alert("The name must start with an uppercase, the following letters must be lowercase, the name must have at least 2 letters and cannot contain numbers or symbols");
+        res.render('edituser',{user:req.session.user, colleague:req.session.colleague, dep:'',error:"The name must start with an uppercase, the following letters must be lowercase, the name must have at least 2 letters and cannot contain numbers or symbols"});
     }
     else {
         if(!name_pattern.test(lastname)) {
-            alert("The name must start with an uppercase, the following letters must be lowercase, the name must have at least 2 letters and cannot contain numbers or symbols");
+            res.render('edituser',{user:req.session.user, colleague:req.session.colleague, dep:'-',error:"The name must start with an uppercase, the following letters must be lowercase, the name must have at least 2 letters and cannot contain numbers or symbols"});
         }
         else {
             const email_pattern = /^[A-Za-z](.+)@([A-Za-z]+)\.([A-Za-z]+)$/;
             if(!email_pattern.test(email)) {
-                alert("Introduce a valid email address");
+                res.render('edituser',{user:req.session.user, colleague:req.session.colleague, dep:'-',error:"Introduce a valid email address"});
             }
             else {
                 const tel_pattern = /^07[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$/;
                 if(!tel_pattern.test(phone)) {
-                    alert("Introduce a valid phone number (format:07xxxxxxxx)");
+                    res.render('edituser',{user:req.session.user, colleague:req.session.colleague, dep:'-',error:"Introduce a valid phone number (format:07xxxxxxxx)"});
                 }
                 else {
                     if(!rol && req.session.user.cod_rol == 2) {
-                        alert("Please select a role");
+                        res.render('edituser',{user:req.session.user, colleague:req.session.colleague, dep:'-',error:"Please select a role"});
                     }
                     else {
 
                         if(!department && req.session.user == 2) {
-                            alert("Please select a department");
+                            res.render('edituser',{user:req.session.user, colleague:req.session.colleague, dep:'-',error:"Please select a department"});
                         }
                         else {
                             connection.query('SELECT COUNT(*) AS nr FROM user WHERE email = ? AND NOT user_id = ?', [email, req.session.colleague.user_id], 
                             (error,rows) => {
                                 if(error) {
                                     console.log(error);
-                                    alert("An error occured while submitting the data, please try again");
+                                    res.render('edituser',{user:req.session.user, colleague:req.session.colleague, dep:'-',error:"An error occured while submitting the data, please try again"});
                                 }
                                 if(!error) {
                                     if(rows[0].nr) {
-                                        alert("Another account with this email already exists");
+                                        res.render('edituser',{user:req.session.user, colleague:req.session.colleague, dep:'-',error:"Another account with this email already exists"});
                                     }
                                     else {
                                         var id = 0;
@@ -1058,7 +1082,7 @@ app.post('/edituser', function (req, res) {
                                         (error,rows) => {
                                             if(error) {
                                                 console.log(error);
-                                                alert("An error occured while submitting the data, please try again");
+                                                res.render('edituser',{user:req.session.user, colleague:req.session.colleague, dep:'-',error:"An error occured while submitting the data, please try again"});
                                             }
                                             if(!error) {
                                                 id = rows[0].dep_id;
@@ -1070,8 +1094,7 @@ app.post('/edituser', function (req, res) {
                                                     }
                                                     else {
                                                         console.log(error);
-                                                        alert("An error occured while submitting the data, please try again");  
-                                                        res.redirect('/edituser');
+                                                        res.render('edituser',{user:req.session.user, colleague:req.session.colleague, dep:'-',error:"An error occured while submitting the data, please try again"});  
                                                     }
                                                 })
                                             }

@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <head>
+  <input style = "display:none" type = "text" value = "<%= error %>" id ="err"/>
+  <% if(error!=null) { %>
+  <script>
+    var e = document.getElementById("err").value;
+    alert( e );
+  </script>
+  <% } %>
 <title>Add Task</title>
 <!-- CSS Files-->
 <link rel="stylesheet" href="style.css">
@@ -12,7 +19,7 @@
 </div>
 
 <div>
-    <form action="/addtask" enctype="multipart/form-data" method="post">
+    <form action="/addtask" method="post">
         <div class="row">
           <div class="col1">
             <label for="name">Task Name</label>
@@ -59,7 +66,7 @@
                 <label for="department">Department</label>
               </div>
               <div class="col2">
-              <input list="department_list" name="department" />
+              <input list="department_list" name="department" id="department"/>
                 <datalist id="department_list">
                   <option value="Human Resources"> </option>
                   <option value="Design"> </option>

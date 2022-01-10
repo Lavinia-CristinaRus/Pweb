@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <head>
+	<input style = "display:none" type = "text" value = "<%= error %>" id ="err"/>
+  <% if(error!=null) { %>
+  <script>
+    var e = document.getElementById("err").value;
+    alert( e );
+  </script>
+  <% } %>
 <title>Home</title>
 <!-- CSS Files-->
 <link rel="stylesheet" href="style.css">

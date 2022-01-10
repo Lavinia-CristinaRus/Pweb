@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <head>
+  <input type = "text" style = "display:none" value = "<%= error %>" id ="err"/>
+  <% if(error!=null) { %>
+  <script>
+    var e = document.getElementById("err").value;
+    alert( e );
+  </script>
+  <% } %>
 <title>Edit Task</title>
 <!-- CSS Files-->
 <link rel="stylesheet" href="style.css">
@@ -12,13 +19,13 @@
 </div>
 
 <div>
-    <form action="/edittask" enctype="multipart/form-data" method="post">
+    <form action="/edittask" method="post">
         <div class="row">
           <div class="col1">
             <label for="name" >Task Name</label>
           </div>
           <div class="col2">
-            <input type="text" id="name" name="name" placeholder="Task name.." value =  <%= task.denumire %> >
+            <input type="text" id="name" name="name" placeholder="Task name.." value =  "<%= task.denumire %>" >
           </div>
         </div>
         <div class="row">
@@ -26,7 +33,7 @@
             <label for="description">Description</label>
           </div>
           <div class="col2">
-            <input type="text" id="description" name="description" placeholder="Task description.." value =  <%= task.descriere %> >
+            <input type="text" id="description" name="description" placeholder="Task description.." value =  "<%= task.descriere %>" >
           </div>
         </div>
         <div class="row">
@@ -43,7 +50,7 @@
               <label for="attach">Attachment</label>
             </div>
             <div class="col2">
-              <input type="text" id="file" name="file" value = <%= task.attach %> >
+              <input type="text" id="file" name="file" value = "<%= task.attach %>" >
             </div>
         </div>
         <div class row>
@@ -82,7 +89,7 @@
               <label for="status">Status</label>
             </div>
             <div class="col2">
-                <input list="status_list" name="status" value = <%= task.status %> />
+                <input list="status_list" name="status" id="status" value = <%= task.status %> />
                 <datalist id="status_list">
                     <option value="unstarted"> </option>
                     <option value="inprogress"> </option>

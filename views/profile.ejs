@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <head>
+    <input style = "display:none" type = "text" value = "<%= error %>" id ="err"/>
+  <% if(error!=null) { %>
+  <script>
+    var e = document.getElementById("err").value;
+    alert( e );
+  </script>
+  <% } %>
 <title>Profile</title>
 <!-- CSS Files-->
 <link rel="stylesheet" href="style.css">
@@ -9,7 +16,7 @@
 <div style="background-color:inherit; box-shadow: 0 15px 8px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.2);">
     <div class="row">
         <div class="headername">
-                <h4 style ="margin-left:30px"><%=colleague.prenume %> <%=colleague.nume %></h4>
+                <h4 style ="margin-left:30px"><%=colleague.prenume %> <%=colleague.nume %> </h4>
         </div>
     </div>
 <div style="height:10px">

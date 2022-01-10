@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <head>
+  <input style = "display:none" type = "text" value = "<%= error %>" id ="err"/>
+  <% if(error!=null) { %>
+  <script>
+    var e = document.getElementById("err").value;
+    alert( e );
+  </script>
+  <% } %>
   <title>colleagues</title>
   <link rel="stylesheet" href="style.css">
   <link rel="stylesheet" href="register_form_style.css">
@@ -30,7 +37,7 @@
             <label for="department">Department</label>
           </div>
           <div class="col2">
-          <input list="department_list" name="department" />
+          <input list="department_list" name="department" id = "department" />
             <datalist id="department_list">
               <option value="Human Resources"> </option>
               <option value="Design"> </option>
@@ -61,7 +68,7 @@
       </table>
       <% for(var i = 0; i< data.length; i++) { %>  
         <div>
-          <form action = '/colleagues' method = "post"><button class = "btn-menu" style="width:100%" value = <%= data[i].user_id%> name = "ID"><table style="width:100%"><tr><td style="width:33%"><%= data[i].prenume%></td> <td style="width:33%"><%= data[i].nume %></td> <td style="width:33%"><%= data[i].activated %></td></tr></table></button></form>
+          <form action = '/colleagues' method = "post"><button class = "btn-menu" style="width:100%" value = <%= data[i].user_id%> name = "ID"><table style="width:100%"><tr><td style="width:33%"> <%= data[i].prenume%> </td> <td style="width:33%"> <%= data[i].nume %> </td> <td style="width:33%"><%= data[i].activated %></td></tr></table></button></form>
         </div>
       <% }
                
