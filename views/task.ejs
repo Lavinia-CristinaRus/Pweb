@@ -1,39 +1,56 @@
 <!DOCTYPE html>
 <head>
-<title>Profile</title>
+<title>Task</title>
 <!-- CSS Files-->
 <link rel="stylesheet" href="style.css">
 </head>
-<body style = "background-image: url('img.png'); background-size: 25%">
 <!-- HEADER -->
-<div style="background-color:#fff; box-shadow: 0 15px 8px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.2);">
+
+<div style="background-color:inherit; box-shadow: 0 15px 8px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.2);">
+    <div class="row">
+        <div class="headername">
+                <h4 style ="margin-left:30px"><%=task.denumire %></h4>
+        </div>
+    </div>
+    <div style="height:10px">
+    </div>
+</div>
+
 <div class="row">
-	<div class="headername">
-			<h4><%=userdata.prenume %> <%=userdata.nume %></h4>
-	</div>
-	
+    <h4 style ="margin-left:50px;font-size:18px">Description: <%=task.descriere %></h4>
 </div>
 
-<div class="hr">
+<div class="row">
+    <h4 style ="margin-left:50px;font-size:18px">Hours: <%=task.timp %></h4>
 </div>
 
-<!-- FOOOTER -->
-<div id="footer">
-	<footer class="row">
-	<p class="back-top floatright">
-		<a href="#top"><span></span></a>
-	</p>
-	<div class="four columns">
-		<h1>ABOUT US</h1>
-	</div>
-	<div class="four columns">
-
-	</div>
-	<div class="four columns">
-		
-	</div>
-	</footer>
+<div class="row">
+    <h4 style ="margin-left:50px;font-size:18px">Number of Persons: <%=task.nr_persoane %></h4>
 </div>
+
+<div class="row">
+    <h4 style ="margin-left:50px;font-size:18px">Attachment link: <%=task.attach %></h4>
+</div>
+<div class="row" style ="margin:50px">
+<table>
+<tr>
+    <%if(user.cod_rol!=0 && task.status != 'done') { %>
+        <td><form action = '/edittask' method = "get"><button class = "btn-menu" >Edit</button></form></td>
+        <td><form action = '/deletetask' method = "get"><button class = "btn-menu" value = "delete" name = "act">Delete Task</button></form></td>
+    <% } %>
+    <%if(user.user_id==task.id_user_f || user.user_id==task.id_user_s || user.user_id==task.id_user_t) { %>
+        <%if(task.status == 'unstarted') { %>
+            <td><form action = '/markinprogress' method = "get"><button class = "btn-menu" >Mark in Progress</button></form></td>
+            <td><form action = '/droptask' method = "get"><button class = "btn-menu" >Drop Task</button></form></td>
+        <% } else if(task.status == 'inprogress') { %>
+            <td><form action = '/markdone' method = "get"><button class = "btn-menu" >Mark Done</button></form></td>
+            <td><form action = '/droptask' method = "get"><button class = "btn-menu" >Drop Task</button></form></td>
+        <% } %>
+    <% } else { %>
+        <td><form action = '/maketask' method = "get"><button class = "btn-menu">Make Task</button></form></td>
+    <% } %>
+</tr>
+</table>
 </div>
 </body>
 </html>

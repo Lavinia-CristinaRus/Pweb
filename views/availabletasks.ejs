@@ -1,41 +1,31 @@
 <!DOCTYPE html>
 <head>
-  <title>completed tasks</title>
+  <title>available tasks</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="table" href="table.css">
 </head>
 <body>
-  <div class="row">
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Task</th>
-        <th scope="col">Time</th>
-     
-      </tr>
-    </thead>
-    <tbody>
-      <% if(data.length){
-     
-      for(var i = 0; i< data.length; i++) {%>  
-      <tr>
-        <th scope="row"><%= (i+1) %></th>
-        <td><%= data[i].denumire%></td>
-        <td><%= data[i].timp%></td>
-        <td>                                            
-       </td>
-      </tr>
-      <% }
-               
-       }else{ %>
-           <tr>
-              <td colspan="3">No available tasks in your department</td>
-           </tr>
-        <% } %>    
-      
-    </tbody>
+<div>
+  <% if(data.length){ %>
+    <table class="table" style = "width:100%;border-bottom: 1px solid #ddd">
+      <thead style = "font-family: Helvetica Neue;font-size: 25px; height:100px">
+        <tr>
+          <th scope="col" style="width:33%">Task</th>
+          <th scope="col" style="width:33%">Status</th>
+          <th scope="col" style="width:33%">Hours</th>
+       
+        </tr>
+      </thead>
     </table>
-  </div>
+    <% for(var i = 0; i< data.length; i++) { %>  
+      <% if( (data[i].nr_persoane == 3 && !(data[i].id_user_f && data[i].id_user_s && data[i].id_user_t)) || (data[i].nr_persoane == 1 && !(data[i].id_user_f || data[i].id_user_s || data[i].id_user_t)) || (data[i].nr_persoane == 2 && !((data[i].id_user_f && data[i].id_user_s) || (data[i].id_user_f && data[i].id_user_t) || (data[i].id_user_s && data[i].id_user_t))) ) { %>
+        <div>
+          <form action = '/availabletasks' method = "post"><button class = "btn-menu" style="width:100%" value = <%= data[i].task_id%> name = "ID"><table style="width:100%"><tr><td style="width:33%"><%= data[i].denumire%></td> <td style="width:33%"><%= data[i].status %></td> <td style="width:33%"><%= data[i].timp %></td></tr></table></button></form>
+        </div>
+      <% }
+    }       
+  }else{ %>
+    <div style = "margin:40px;font-size:25px">No available tasks</div>
+  <% } %> 
+</div>
 </body>
 </html>

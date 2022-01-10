@@ -3,13 +3,22 @@
 <title>Home</title>
 <!-- CSS Files-->
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="addtask_form.css">
+
 </head>
 <body style = "background-image: url('img.png'); background-size: 25%">
 <!-- HEADER -->
 <div style="background-color:#fff; box-shadow: 0 15px 8px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.2);">
-<div class="row">
+<div class="row" style="width:100%;margin-left:300px">
+	<div class = "col1"> 
 	<div class="headername">
 			<h4><%=userdata.prenume %> <%=userdata.nume %></h4>
+	</div>
+	</div>
+	<div class = "col2" style = "transform: translateX(30%);"> 
+		<form action="/home" method="post">
+			<button class = "btn-menu" >Log Out</button>
+		</form>
 	</div>
 	
 </div>
@@ -17,31 +26,25 @@
 <div class="hr">
 </div>
 <div class="row">
-	<nav class="slidemenu">
-  
-		<!-- Item 1 -->
-		<input type="radio" name="slideItem" id="slide-item-1" class="slide-toggle" checked/>
-		<label for="slide-item-1"><span><a href = '/availabletasks' target = "selection">Available Tasks</a></span></label>
+	<div class="center" style="transform:translate(15%,-40%)">
+
+		<a class = "btn-menu" href = "/availabletasks" target = "selection">Available Tasks</a>
 		
-		<!-- Item 2 -->
-		<input type="radio" name="slideItem" id="slide-item-2" class="slide-toggle"/>
-		<label for="slide-item-2"><span><a href = '/mytasks' target = "selection">My Tasks</a></span></label>
+		<a class = "btn-menu" href = "/mytasks" target = "selection">My Tasks</a>
 		
-		<!-- Item 3 -->
-		<input type="radio" name="slideItem" id="slide-item-3" class="slide-toggle"/>
-		<label for="slide-item-3"><span><a href = '/colleagues' target = "selection">Department Colleagues</a></span></label>
-		
-			<% if(userdata.cod_rol !=0 ) { %><input type="radio" name="slideItem" id="slide-item-4" class="slide-toggle"/>
-			<label for="slide-item-4"></p><span><a href = '/addtask' target = "selection">Add Task</a></span></label>
-			<% } %>
-		<div class="clear"></div>
-		
-		<!-- Bar -->
-		<div class="slider">
-		  <div class="bar"></div>
-		</div>
-		
-	</nav>
+		<% if(userdata.cod_rol !=0 ) { %>
+			<a class = "btn-menu" href = "/addtask" target = "selection">Add Task</a>
+		<% } %>
+		<% if(userdata.cod_rol ==0 ) { %>
+			<a class = "btn-menu" href = "/colleagues" target = "selection">Department Colleagues</a>
+		<% } %>
+		<% if(userdata.cod_rol !=0 ) { %>
+			<a class = "btn-menu" href = "/colleagues" target = "selection">Volunteers</a>
+		<% } %>
+		<% if(userdata.cod_rol !=0 ) { %>
+			<a class = "btn-menu" href = "/alltasks" target = "selection">All Tasks</a>
+		<% } %>
+	</div>
  </div>
  </div>
 </div>

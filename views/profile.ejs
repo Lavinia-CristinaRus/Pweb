@@ -4,36 +4,82 @@
 <!-- CSS Files-->
 <link rel="stylesheet" href="style.css">
 </head>
-<body style = "background-image: url('img.png'); background-size: 25%">
 <!-- HEADER -->
-<div style="background-color:#fff; box-shadow: 0 15px 8px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.2);">
+
+<div style="background-color:inherit; box-shadow: 0 15px 8px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.2);">
+    <div class="row">
+        <div class="headername">
+                <h4 style ="margin-left:30px"><%=colleague.prenume %> <%=colleague.nume %></h4>
+        </div>
+    </div>
+<div style="height:10px">
+</div>
+</div>
+
 <div class="row">
-	<div class="headername">
-			<h4><%=userdata.prenume %> <%=userdata.nume %></h4>
-	</div>
-	
+    <%if(user.cod_rol!=0) { %>
+        <h4 style ="margin-left:50px;font-size:18px">ID: <%=colleague.user_id %></h4>
+    <% } %>
 </div>
 
-<div class="hr">
+<div class="row">
+    <%if(user.cod_rol==2) { %>
+        <h4 style ="margin-left:50px;font-size:18px">Department: <%=dep %></h4>
+    <% } %>
 </div>
 
-<!-- FOOOTER -->
-<div id="footer">
-	<footer class="row">
-	<p class="back-top floatright">
-		<a href="#top"><span></span></a>
-	</p>
-	<div class="four columns">
-		<h1>ABOUT US</h1>
-	</div>
-	<div class="four columns">
+<div class="row">
+    <%if(user.cod_rol!=0) { %>
+        <h4 style ="margin-left:50px;font-size:18px">Email: <%=colleague.email %></h4>
+    <% } %>
+</div>
 
-	</div>
-	<div class="four columns">
-		
-	</div>
-	</footer>
+<div class="row">
+    <%if(user.cod_rol!=0) { %>
+        <h4 style ="margin-left:50px;font-size:18px">Birthday: <%=colleague.data_nasterii %></h4>
+    <% } %>
 </div>
+
+<div class="row">
+    <h4 style ="margin-left:50px;font-size:18px">Phone Number: <%=colleague.telefon %></h4>
 </div>
+
+<div class="row">
+    <%if(colleague.cod_rol==2) { %>
+        <h4 style ="margin-left:50px;font-size:18px">Role: Admin</h4>
+    <% } %>
+    <%if(colleague.cod_rol==1) { %>
+        <h4 style ="margin-left:50px;font-size:18px">Role: Coordinator</h4>
+    <% } %>
+    <%if(colleague.cod_rol==0) { %>
+        <h4 style ="margin-left:50px;font-size:18px">Role: Volunteer</h4>
+    <% } %>
+</div>
+
+<div class="row">
+    <h4 style ="margin-left:50px;font-size:18px">Hours: <%=ore %></h4>
+</div>
+
+<div class="row">
+    <h4 style ="margin-left:50px;font-size:18px">Tasks: <%=tasks %></h4>
+</div>
+
+<div class="row" style ="margin:50px">
+    <table>
+    <tr>
+    <%if(user.cod_rol!=0 && colleague.cod_rol != 2) { %>
+        <td><form action = '/deleteaccount' method = "get"><button class = "btn-menu" >Delete Account</button></form></td>
+    <% } %>
+    <%if(user.cod_rol!=0 || user.user_id == colleague.user_id) { %>
+        <td><form action = '/changepassword' method = "get"><button class = "btn-menu" >Change Password</button></form></td>
+        <td><form action = '/edituser' method = "get"><button class = "btn-menu" >Edit</button></form></td>
+        <%if(colleague.activated==0) { %>
+            <td><form action = '/activateaccount' method = "get"><button class = "btn-menu" >Activate Account</button></form></td>
+        <% } %>
+    <% } %>
+    </tr>  
+    </table>
+</div>
+
 </body>
 </html>

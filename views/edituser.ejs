@@ -1,25 +1,20 @@
 <!DOCTYPE html>
 <head>
-  <% if(error!=null) { %>
-  <script>
-    alert(error);
-  </script>
-  <% } %>
-  <title>Register</title>
+
+  <title>Edit User</title>
   <!-- CSS Files-->
   <link rel="stylesheet" href="register_style.css">
   <link rel="stylesheet" href="register_form_style.css">
 </head>
 <body>
-<div class="center">
-    <h1>Register</h1>
-    <form action="/" method="post">
+    <h1>Edit User</h1>
+    <form action="/edituser" method="post">
         <div class="row">
           <div class="col1">
             <label for="fname">First Name</label>
           </div>
           <div class="col2">
-            <input type="text" id="fname" name="firstname" placeholder="Your first name..">
+            <input type="text" id="fname" name="firstname" placeholder="Your first name.." value = <%= colleague.prenume %> >
           </div>
         </div>
         <div class="row">
@@ -27,7 +22,7 @@
             <label for="lname">Last Name</label>
           </div>
           <div class="col2">
-            <input type="text" id="lname" name="lastname" placeholder="Your last name..">
+            <input type="text" id="lname" name="lastname" placeholder="Your last name.." value = <%= colleague.nume %> >
           </div>
         </div>
         <div class="row">
@@ -35,7 +30,7 @@
               <label for="email">Email Adress</label>
             </div>
             <div class="col2">
-              <input type="email" id="email" name="email" placeholder="Your email adress..">
+              <input type="email" id="email" name="email" placeholder="Your email adress.." value = <%= colleague.email %>>
             </div>
           </div>
           <div class="row">
@@ -43,31 +38,16 @@
               <label for="phone">Phone Number</label>
             </div>
             <div class="col2">
-              <input type="tel" id="phone" name="nr_telefon" placeholder="Your phone number..">
+              <input type="tel" id="phone" name="nr_telefon" placeholder="Your phone number.." value = <%= colleague.telefon %> >
             </div>
           </div>
-          <div class="row">
-            <div class="col1">
-              <label for="bday">Birthday</label>
-            </div>
-            <div class="col2">
-              <input type="date" id="bday" name="bday" placeholder="Your birthday.." min = "1900-01-01" max = "2020-12-31">
-            </div>
-          </div>
-          <div class="row">
-            <div class="col1">
-              <label for="pass">Password</label>
-            </div>
-            <div class="col2">
-              <input type="password" id="pass" name="pass" placeholder="Your password..">
-            </div>
-          </div>
+          <% if(user.cod_rol == 2) { %>
           <div class="row">
             <div class="col1">
               <label for="department">Department</label>
             </div>
             <div class="col2">
-            <input list="department_list" name="department" />
+            <input list="department_list" name="department" value = <%= dep.nume %> />
               <datalist id="department_list">
                 <option value="Human Resources"> </option>
                 <option value="Design"> </option>
@@ -77,15 +57,21 @@
               </datalist>
             </div>
           </div>
-          <input type="submit" value="Register">
+          <div class="row">
+            <div class="col1">
+              <label for="rol">Role</label>
+            </div>
+            <div class="col2">
+            <input list="rol_list" name="rol" />
+              <datalist id="rol_list">
+                <option value="Volunteer"> </option>
+                <option value="Coordinator"> </option>
+                <option value="Admin"> </option>
+              </datalist>
+            </div>
+          </div>
+          <% } %>
+          <input type="submit" value="Save">
     </form>
-</div>
-<a href="javascript:setTimeout(()=>{window.location = 'login' },200);">
-    <div class = "login">
-        <h1 id = "login_text">Log In</h1>
-    </div>
-</a>
-
 </body>
-
 </html>

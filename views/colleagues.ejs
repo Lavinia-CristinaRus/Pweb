@@ -2,40 +2,72 @@
 <head>
   <title>colleagues</title>
   <link rel="stylesheet" href="style.css">
-  <link rel="table" href="table.css">
+  <link rel="stylesheet" href="register_form_style.css">
 </head>
 <body>
-  <div class="row">
-<table class="table">
-    <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">First Name</th>
-        <th scope="col">Last Name</th>
-     
-      </tr>
-    </thead>
-    <tbody>
-      <% if(data.length){
-     
-      for(var i = 0; i< data.length; i++) { %>  
-      <tr>
-        <th scope="row"><%= (i+1) %></th>
-        <td><%= data[i].prenume%></td>
-        <td><%= data[i].nume%></td>
-        <td>                                            
-       </td>
-      </tr>
+  <div style="background-color:inherit; box-shadow: 0 15px 8px 0 rgba(0, 0, 0, 0.2), 0 15px 20px 0 rgba(0, 0, 0, 0.2);">
+    <form action = "/colleagues" method = "post">
+      <div class="row">
+        <div class="col1">
+          <label for="fname">First Name</label>
+        </div>
+        <div class="col2">
+          <input type="text" id="fname" name="fname" placeholder="The first name you want to search for">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col1">
+          <label for="lname">Last Name</label>
+        </div>
+        <div class="col2">
+          <input type="text" id="lname" name="lname" placeholder="The last name you want to search for">
+        </div>
+      </div>
+
+      <% if(user.cod_rol == 2) { %>
+        <div class="row">
+          <div class="col1">
+            <label for="department">Department</label>
+          </div>
+          <div class="col2">
+          <input list="department_list" name="department" />
+            <datalist id="department_list">
+              <option value="Human Resources"> </option>
+              <option value="Design"> </option>
+              <option value="Public Relations"> </option>
+              <option value="IT"> </option>
+              <option value="Fundraising"> </option>
+            </datalist>
+          </div>
+        </div>
+      <% } %>
+
+      <input type="submit" value="Search">
+    </form>
+    
+    <div style="height:10px">
+    </div>
+</div>
+  <div>
+    <% if(data.length){ %>
+      <table class="table" style = "width:100%;border-bottom: 1px solid #ddd">
+        <thead style = "font-family: Helvetica Neue;font-size: 25px; height:100px">
+          <tr>
+            <th scope="col" style="width:33%">First Name</th>
+            <th scope="col" style="width:33%">Last Name</th>
+            <th scope="col" style="width:33%">Active</th>
+          </tr>
+        </thead>
+      </table>
+      <% for(var i = 0; i< data.length; i++) { %>  
+        <div>
+          <form action = '/colleagues' method = "post"><button class = "btn-menu" style="width:100%" value = <%= data[i].user_id%> name = "ID"><table style="width:100%"><tr><td style="width:33%"><%= data[i].prenume%></td> <td style="width:33%"><%= data[i].nume %></td> <td style="width:33%"><%= data[i].activated %></td></tr></table></button></form>
+        </div>
       <% }
                
-       }else{ %>
-           <tr>
-              <td colspan="3">No user</td>
-           </tr>
-        <% } %>    
-      
-    </tbody>
-    </table>
+    }else{ %>
+      <div style = "margin:40px;font-size:25px">No department colleagues</div>
+    <% } %> 
   </div>
 </body>
 </html>

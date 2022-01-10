@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<head>
+<title>Edit Task</title>
+<!-- CSS Files-->
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="addtask_form.css">
+</head>
+<body>
+<!-- HEADER -->
+<div class="row">
+	<div class="header" style = "margin-left:30px">Edit task</div>
+</div>
+
+<div>
+    <form action="/edittask" enctype="multipart/form-data" method="post">
+        <div class="row">
+          <div class="col1">
+            <label for="name" >Task Name</label>
+          </div>
+          <div class="col2">
+            <input type="text" id="name" name="name" placeholder="Task name.." value =  <%= task.denumire %> >
+          </div>
+        </div>
+        <div class="row">
+          <div class="col1">
+            <label for="description">Description</label>
+          </div>
+          <div class="col2">
+            <input type="text" id="description" name="description" placeholder="Task description.." value =  <%= task.descriere %> >
+          </div>
+        </div>
+        <div class="row">
+            <div class="col1">
+              <label for="time">Estimated time (in hours)</label>
+            </div>
+            <div class="col2">
+              <input type="number" id="time" name="time" placeholder="Estimated hours for task.." min ="1" value =  <%= task.timp %> >
+            </div>
+        </div>
+         
+        <div class="row">
+            <div class="col1">
+              <label for="attach">Attachment</label>
+            </div>
+            <div class="col2">
+              <input type="text" id="file" name="file" value = <%= task.attach %> >
+            </div>
+        </div>
+        <div class row>
+            <div class="col1">
+                <label for="f_id">ID of First Person Assigned</label>
+              </div>
+              <div class="col2">
+                <input type="number" id="f_id" name="f_id" value = <%= task.id_user_f %> >
+              </div>
+        </div>
+
+        <% if(task.nr_persoane >= 2) { %>
+            <div class row>
+                <div class="col1">
+                    <label for="s_id">ID of Second Person Assigned</label>
+                  </div>
+                  <div class="col2">
+                    <input type="number" id="s_id" name="s_id" value = <%= task.id_user_s %> >
+                  </div>
+            </div>
+        <% } %>
+
+        <% if(task.nr_persoane == 3) { %>
+            <div class row>
+                <div class="col1">
+                    <label for="t_id">ID of Third Person Assigned</label>
+                  </div>
+                  <div class="col2">
+                    <input type="number" id="t_id" name="t_id" value = <%= task.id_user_s %> >
+                  </div>
+            </div>
+        <% } %>
+
+        <div class="row">
+            <div class="col1">
+              <label for="status">Status</label>
+            </div>
+            <div class="col2">
+                <input list="status_list" name="status" value = <%= task.status %> />
+                <datalist id="status_list">
+                    <option value="unstarted"> </option>
+                    <option value="inprogress"> </option>
+                    <option value="done"> </option>
+                </datalist>
+            </div>
+        </div>
+
+        <input type="submit" value="Save">
+    </form>
+</div>
+
+</body>
+</html>
